@@ -89,10 +89,19 @@
         a:hover {
             text-decoration: underline;
         }
+
+        /* 简单的“loading”提示样式，可自行调整 */
+        #loading {
+            display: none;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #888;
+        }
     </style>
 </head>
 <body>
-    <form action="https://testing-project-zeta-ruddy.vercel.app/page.html">
+    <!-- 给表单加一个 id -->
+    <form id="registrationForm" action="https://testing-project-zeta-ruddy.vercel.app/page.html">
         <h1>注册信息</h1>
 
         <!-- 个人信息 -->
@@ -166,19 +175,40 @@
 
         <button type="submit">免费注册</button>
         <button type="reset">重新填写</button>
+
+        <!-- 用于显示5秒倒计时或loading提示 -->
+        <div id="loading">正在提交，请稍候...</div>
     </form>
 
     <script>
+      // 密码一致性校验
       function checkPassword() {
         const password = document.getElementById('password');
         const confirm = document.getElementById('confirm-password');
-    
+
         if (confirm.value === password.value) {
           confirm.setCustomValidity('');
         } else {
           confirm.setCustomValidity('两次输入的密码不一致');
         }
       }
+
+      // 点击提交后等待5秒再真正提交
+      const registrationForm = document.getElementById('registrationForm');
+      const loadingMessage = document.getElementById('loading');
+
+      registrationForm.addEventListener('submit', function(event) {
+        // 阻止浏览器立刻提交表单
+        event.preventDefault();
+
+        // 显示loading提示
+        loadingMessage.style.display = 'block';
+
+        // 5秒后再提交
+        setTimeout(() => {
+          registrationForm.submit();
+        }, 5000);
+      });
     </script>
 </body>
 </html>
